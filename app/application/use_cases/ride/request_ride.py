@@ -41,4 +41,8 @@ class RequestRideUseCase:
         )
         await self.event_bus.publish("ride_events", event)
 
+        # Trigger Celery driver matching task
+        from app.infrastructure.tasks.ride_matching_tasks import trigger_driver_matching
+        trigger_driver_matching.delay(str(ride.id))
+
         return ride
