@@ -17,8 +17,11 @@ export default function Navbar() {
     localStorage.setItem("user_role", newRole);
     setRole(newRole);
     setDropdownOpen(false);
-    // Reload page to propagate changes
-    window.location.reload();
+    if (window.location.pathname.startsWith("/dashboard")) {
+      window.location.href = `/dashboard/${newRole}`;
+    } else {
+      window.location.reload();
+    }
   };
 
   return (

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Fira_Sans, Fira_Code } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const firaSans = Fira_Sans({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
   variable: "--font-sans",
 });
 
-const outfit = Outfit({
+const firaCode = Fira_Code({
   subsets: ["latin"],
   variable: "--font-display",
 });
@@ -25,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark scroll-smooth">
       <body
-        className={`${inter.variable} ${outfit.variable} antialiased bg-[#07090e] text-[#f1f5f9] min-h-screen flex flex-col font-sans`}
+        className={`${firaSans.variable} ${firaCode.variable} antialiased bg-[#07090e] text-[#f1f5f9] min-h-screen flex flex-col font-sans`}
       >
         {children}
       </body>
