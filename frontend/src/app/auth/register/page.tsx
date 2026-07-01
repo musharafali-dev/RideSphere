@@ -104,7 +104,7 @@ export default function RegisterPage() {
                 <Star key={i} className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
               ))}
             </div>
-            <p className="text-[11px] text-slate-350 italic leading-relaxed">
+            <p className="text-[11px] text-slate-300 italic leading-relaxed">
               "RideSphere simplified our corporate tours. The vehicle catalog is pristine and verification credentials were fully approved in hours."
             </p>
             <span className="block text-[10px] font-bold text-white mt-2">— Sarah Shah, Operations Lead</span>

@@ -80,7 +80,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-350">
+        <nav className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-300">
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
           
           <div 
