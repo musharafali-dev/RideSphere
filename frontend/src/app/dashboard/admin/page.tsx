@@ -30,6 +30,7 @@ export default function AdminDashboard() {
 
   const [usersList, setUsersList] = useState<any[]>([]);
   const [auditLogs, setAuditLogs] = useState<any[]>([]);
+  const [bookings, setBookings] = useState<any[]>([]);
 
   useEffect(() => {
     setVerifications([
@@ -48,6 +49,11 @@ export default function AdminDashboard() {
       { timestamp: "2026-07-02 01:10", action: "Verify user document VER-002 Approved", user: "Admin User", status: "Success" },
       { timestamp: "2026-07-01 23:45", action: "System configuration variables updated", user: "Admin User", status: "Success" }
     ]);
+
+    const storedBookings = localStorage.getItem("pending_bookings");
+    if (storedBookings) {
+      setBookings(JSON.parse(storedBookings));
+    }
   }, []);
 
   const handleVerify = (id: string, action: "approve" | "reject") => {
@@ -61,6 +67,28 @@ export default function AdminDashboard() {
       {
         timestamp: "Just now",
         action: `Verify document ${id} ${action === "approve" ? "Approved" : "Rejected"}`,
+        user: "Admin User",
+        status: "Success"
+      },
+      ...prev
+    ]);
+  };
+
+  const handleBookingApproval = (id: string, action: "approve" | "reject") => {
+    setBookings(prev => {
+      const updated = prev.map(b => b.id === id ? { ...b, status: action === "approve" ? "approved" : "rejected" } : b);
+      localStorage.setItem("pending_bookings", JSON.stringify(updated));
+      return updated;
+    });
+
+    if (action === "approve") {
+      setStats(prev => ({ ...prev, bookings: prev.bookings + 1 }));
+    }
+
+    setAuditLogs(prev => [
+      {
+        timestamp: "Just now",
+        action: `Booking ${id} ${action === "approve" ? "Approved" : "Rejected"}`,
         user: "Admin User",
         status: "Success"
       },
@@ -208,46 +236,95 @@ export default function AdminDashboard() {
 
               {/* APPROVALS TAB */}
               {activeTab === "approvals" && (
-                <div className="space-y-6">
-                  <h2 className="font-display font-bold text-lg text-slate-800">Verification Center</h2>
+                <div className="space-y-8">
+                  <div className="space-y-6">
+                    <h2 className="font-display font-bold text-lg text-slate-800">Verification Center</h2>
 
-                  <div className="space-y-4">
-                    {verifications.filter(v => v.status === "pending").length === 0 ? (
-                      <div className="bg-white border border-slate-100 p-8 rounded-3xl text-center text-slate-450 text-xs shadow-sm">
-                        All compliance requests audited. Pending: 0.
-                      </div>
-                    ) : (
-                      verifications.filter(v => v.status === "pending").map(v => (
-                        <div key={v.id} className="bg-white border border-slate-100 p-6 rounded-3xl space-y-4 shadow-sm">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <span className="text-[9px] bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full font-bold">{v.type}</span>
-                              <h3 className="font-display font-bold text-md text-slate-850 mt-2">{v.name}</h3>
-                            </div>
-                            <span className="text-xs text-slate-400 font-mono font-semibold">{v.id}</span>
-                          </div>
-
-                          <p className="text-xs text-slate-550 bg-slate-50 p-3.5 rounded-xl border border-slate-100 font-semibold">
-                            {v.details}
-                          </p>
-
-                          <div className="flex gap-2 justify-end">
-                            <button 
-                              onClick={() => handleVerify(v.id, "reject")}
-                              className="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-red-650 rounded-xl cursor-pointer"
-                            >
-                              Reject
-                            </button>
-                            <button 
-                              onClick={() => handleVerify(v.id, "approve")}
-                              className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl cursor-pointer shadow-sm"
-                            >
-                              Approve
-                            </button>
-                          </div>
+                    <div className="space-y-4">
+                      {verifications.filter(v => v.status === "pending").length === 0 ? (
+                        <div className="bg-white border border-slate-100 p-8 rounded-3xl text-center text-slate-450 text-xs shadow-sm">
+                          All compliance requests audited. Pending: 0.
                         </div>
-                      ))
-                    )}
+                      ) : (
+                        verifications.filter(v => v.status === "pending").map(v => (
+                          <div key={v.id} className="bg-white border border-slate-100 p-6 rounded-3xl space-y-4 shadow-sm">
+                            <div className="flex justify-between items-center">
+                              <div>
+                                <span className="text-[9px] bg-slate-100 text-slate-500 px-2.5 py-0.5 rounded-full font-bold">{v.type}</span>
+                                <h3 className="font-display font-bold text-md text-slate-850 mt-2">{v.name}</h3>
+                              </div>
+                              <span className="text-xs text-slate-400 font-mono font-semibold">{v.id}</span>
+                            </div>
+
+                            <p className="text-xs text-slate-550 bg-slate-50 p-3.5 rounded-xl border border-slate-100 font-semibold">
+                              {v.details}
+                            </p>
+
+                            <div className="flex gap-2 justify-end">
+                              <button 
+                                onClick={() => handleVerify(v.id, "reject")}
+                                className="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-red-650 rounded-xl cursor-pointer"
+                              >
+                                Reject
+                              </button>
+                              <button 
+                                onClick={() => handleVerify(v.id, "approve")}
+                                className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl cursor-pointer shadow-sm"
+                              >
+                                Approve
+                              </button>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Pending Vehicle Bookings */}
+                  <div className="space-y-6 pt-8 border-t border-slate-100">
+                    <h2 className="font-display font-bold text-lg text-slate-800">Pending Vehicle Bookings</h2>
+
+                    <div className="space-y-4">
+                      {bookings.filter(b => b.status === "pending").length === 0 ? (
+                        <div className="bg-white border border-slate-100 p-8 rounded-3xl text-center text-slate-455 text-xs shadow-sm">
+                          No pending vehicle bookings approvals. Pending: 0.
+                        </div>
+                      ) : (
+                        bookings.filter(b => b.status === "pending").map(b => (
+                          <div key={b.id} className="bg-white border border-slate-100 p-6 rounded-3xl space-y-4 shadow-sm animate-in fade-in duration-200">
+                            <div className="flex justify-between items-center">
+                              <div>
+                                <span className="text-[9px] bg-blue-50 text-blue-600 px-2.5 py-0.5 rounded-full font-bold">Booking Request &bull; {b.paymentMethod.toUpperCase()}</span>
+                                <h3 className="font-display font-bold text-md text-slate-850 mt-2">{b.vehicle}</h3>
+                              </div>
+                              <span className="text-xs text-slate-400 font-mono font-semibold">{b.id}</span>
+                            </div>
+
+                            <div className="text-xs text-slate-550 space-y-1 font-semibold">
+                              <p>Client: <strong className="text-slate-800">{b.client}</strong></p>
+                              <p>Duration: <strong className="text-slate-800">{b.days} days</strong></p>
+                              <p>Cost: <strong className="text-emerald-600">${b.price}</strong></p>
+                              <p>Date: <strong className="text-slate-500">{b.timestamp}</strong></p>
+                            </div>
+
+                            <div className="flex gap-2 justify-end">
+                              <button 
+                                onClick={() => handleBookingApproval(b.id, "reject")}
+                                className="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-red-650 rounded-xl cursor-pointer"
+                              >
+                                Reject Booking
+                              </button>
+                              <button 
+                                onClick={() => handleBookingApproval(b.id, "approve")}
+                                className="px-5 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-xl cursor-pointer shadow-sm"
+                              >
+                                Approve Booking
+                              </button>
+                            </div>
+                          </div>
+                        ))
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
