@@ -165,6 +165,34 @@ export default function LoginPage() {
             </button>
           </form>
 
+          {/* Quick Seed Credentials Autofill */}
+          <div className="mt-6 pt-5 border-t border-slate-100 text-slate-850">
+            <span className="text-[9px] text-slate-400 font-bold uppercase tracking-wider block text-center mb-3">
+              Quick Autofill Credentials
+            </span>
+            <div className="grid grid-cols-2 gap-2 max-w-sm mx-auto sm:grid-cols-3">
+              {[
+                { label: "Customer", email: "customer1@ridesphere.com", pass: "password123" },
+                { label: "Fleet Owner", email: "owner1@ridesphere.com", pass: "password123" },
+                { label: "Driver", email: "driver1@ridesphere.com", pass: "password123" },
+                { label: "Tour Operator", email: "operator1@ridesphere.com", pass: "password123" },
+                { label: "System Admin", email: "admin1@ridesphere.com", pass: "password123" }
+              ].map((cred, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setEmail(cred.email);
+                    setPassword(cred.pass);
+                  }}
+                  className="px-2 py-1.5 bg-slate-50 hover:bg-blue-50 border border-slate-200 rounded-lg text-[9px] font-bold text-slate-600 hover:text-blue-600 hover:border-blue-200 transition-all text-center cursor-pointer"
+                >
+                  {cred.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="space-y-3 mt-6 text-center text-xs font-semibold">
             <p className="text-slate-500">
               Don&apos;t have an account? <Link href="/auth/register" className="text-blue-600 hover:underline">Register Now</Link>

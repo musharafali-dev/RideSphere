@@ -1,26 +1,56 @@
 @import "tailwindcss";
 
+:root {
+  --font-sans: var(--font-sans), sans-serif;
+  --font-display: var(--font-display), sans-serif;
+  
+  --brand-primary: #2563EB;
+  --brand-secondary: #0F172A;
+  --brand-accent: #F59E0B;
+  --brand-success: #10B981;
+  --brand-danger: #EF4444;
+  --brand-bg: #F8FAFC;
+  
+  --card-bg: #FFFFFF;
+  --card-border: rgba(15, 23, 42, 0.08);
+  --text-main: #0F172A;
+  --text-muted: #64748B;
+}
+
+.dark {
+  --brand-primary: #3B82F6;
+  --brand-secondary: #F8FAFC;
+  --brand-accent: #F59E0B;
+  --brand-success: #10B981;
+  --brand-danger: #EF4444;
+  --brand-bg: #090D16;
+  
+  --card-bg: #0c0f17;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
+}
+
 @theme {
   --font-sans: var(--font-sans), sans-serif;
   --font-display: var(--font-display), sans-serif;
-  --color-primary: #2563EB;
-  --color-secondary: #0F172A;
-  --color-accent: #F59E0B;
-  --color-success: #10B981;
-  --color-danger: #EF4444;
-  --color-bg-light: #F8FAFC;
-  --color-brand-primary: #2563EB;
-  --color-brand-secondary: #0F172A;
-  --color-brand-accent: #F59E0B;
-  --color-brand-success: #10B981;
-  --color-brand-danger: #EF4444;
-  --color-brand-bg: #F8FAFC;
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-success: var(--brand-success);
+  --color-brand-danger: var(--brand-danger);
+  --color-brand-bg: var(--brand-bg);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-text-main: var(--text-main);
+  --color-text-muted: var(--text-muted);
 }
 
 body {
   font-family: var(--font-sans);
   background-color: var(--color-brand-bg);
-  color: var(--color-brand-secondary);
+  color: var(--color-text-main);
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {

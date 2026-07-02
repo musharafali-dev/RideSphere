@@ -30,3 +30,13 @@ def get_admin_stats(
         "bookings_count": total_bookings,
         "total_revenue": total_revenue,
     }
+
+
+@router.post("/reseed")
+def reseed_database():
+    try:
+        from seed_data import seed_db
+        seed_db()
+        return {"message": "Database reseeded successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Database reseed failed: {str(e)}")

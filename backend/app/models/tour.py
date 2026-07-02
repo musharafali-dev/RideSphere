@@ -16,6 +16,7 @@ class Tour(Base):
     price = Column(Float, nullable=False)
     duration_days = Column(Integer, nullable=False, default=1)
     itinerary = Column(String, nullable=True)  # Text itinerary or list description
+    image_url = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 

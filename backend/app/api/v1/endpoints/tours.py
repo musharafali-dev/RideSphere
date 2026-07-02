@@ -39,3 +39,13 @@ def create_tour(
     db.commit()
     db.refresh(db_tour)
     return db_tour
+
+
+@router.delete("/{tour_id}")
+def delete_tour(tour_id: str, db: Session = Depends(get_db)):
+    tour = db.query(Tour).filter(Tour.id == tour_id).first()
+    if not tour:
+        raise HTTPException(status_code=404, detail="Tour not found")
+    db.delete(tour)
+    db.commit()
+    return {"message": "Tour deleted successfully"}

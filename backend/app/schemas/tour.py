@@ -10,6 +10,7 @@ class TourBase(BaseModel):
     price: float
     duration_days: int
     itinerary: Optional[str] = None
+    image_url: Optional[str] = None
     is_active: Optional[bool] = True
 
 

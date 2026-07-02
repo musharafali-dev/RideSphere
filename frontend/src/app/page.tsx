@@ -25,6 +25,11 @@ interface Vehicle {
   owner?: string;
 }
 
+const fNameForOwner = (idx: number) => {
+  const names = ["John Fleet", "Elite Rentals", "Khan Chauffeurs", "Adventure Hub", "Drive Comfort"];
+  return names[idx % names.length];
+};
+
 export default function Home() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [activeSearchTab, setActiveSearchTab] = useState("cars");
@@ -137,11 +142,6 @@ export default function Home() {
       .catch(() => {});
   }, []);
 
-  const fNameForOwner = (idx: number) => {
-    const names = ["John Fleet", "Elite Rentals", "Khan Chauffeurs", "Adventure Hub", "Drive Comfort"];
-    return names[idx % names.length];
-  };
-
   const toggleFavorite = (id: string) => {
     setFavorites(prev => 
       prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
@@ -177,9 +177,9 @@ export default function Home() {
             </p>
 
             {/* Overlaid Search Widget */}
-            <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl p-4 mt-10 text-left border border-slate-100">
+            <div className="max-w-4xl mx-auto bg-card-bg rounded-3xl shadow-2xl p-4 mt-10 text-left border border-card-border">
               {/* Category tabs */}
-              <div className="flex border-b border-slate-100 pb-3 mb-4 gap-2 overflow-x-auto">
+              <div className="flex border-b border-card-border pb-3 mb-4 gap-2 overflow-x-auto">
                 {[
                   { id: "cars", label: "Cars" },
                   { id: "bikes", label: "Bikes" },
@@ -191,8 +191,8 @@ export default function Home() {
                     onClick={() => setActiveSearchTab(tab.id)}
                     className={`px-4 py-1.5 rounded-full text-xs font-semibold cursor-pointer transition-all ${
                       activeSearchTab === tab.id
-                        ? "bg-blue-600 text-white"
-                        : "text-slate-500 hover:text-slate-800"
+                        ? "bg-brand-primary text-white"
+                        : "text-text-muted hover:text-text-main"
                     }`}
                   >
                     {tab.label}
@@ -202,63 +202,63 @@ export default function Home() {
 
               {/* Input grid */}
               <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-                <div className="border border-slate-100 rounded-2xl p-3 flex flex-col justify-center">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Pick-up Location</span>
+                <div className="border border-card-border rounded-2xl p-3 flex flex-col justify-center bg-brand-bg/20">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Pick-up Location</span>
                   <div className="flex items-center gap-1.5 mt-1">
-                    <MapPin className="h-4 w-4 text-blue-600 shrink-0" />
+                    <MapPin className="h-4 w-4 text-brand-primary shrink-0" />
                     <input
                       type="text"
                       placeholder="Enter location"
                       value={pickupLoc}
                       onChange={(e) => setPickupLoc(e.target.value)}
-                      className="bg-transparent border-none text-slate-800 font-semibold placeholder-slate-400 text-xs w-full focus:outline-none"
+                      className="bg-transparent border-none text-text-main font-semibold placeholder-text-muted text-xs w-full focus:outline-none"
                     />
                   </div>
                 </div>
 
-                <div className="border border-slate-100 rounded-2xl p-3 flex flex-col justify-center">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Drop-off Location</span>
+                <div className="border border-card-border rounded-2xl p-3 flex flex-col justify-center bg-brand-bg/20">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Drop-off Location</span>
                   <div className="flex items-center gap-1.5 mt-1">
-                    <MapPin className="h-4 w-4 text-blue-600 shrink-0" />
+                    <MapPin className="h-4 w-4 text-brand-primary shrink-0" />
                     <input
                       type="text"
                       placeholder="Enter location"
                       value={dropoffLoc}
                       onChange={(e) => setDropoffLoc(e.target.value)}
-                      className="bg-transparent border-none text-slate-800 font-semibold placeholder-slate-400 text-xs w-full focus:outline-none"
+                      className="bg-transparent border-none text-text-main font-semibold placeholder-text-muted text-xs w-full focus:outline-none"
                     />
                   </div>
                 </div>
 
-                <div className="border border-slate-100 rounded-2xl p-3 flex flex-col justify-center">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Pick-up Date</span>
+                <div className="border border-card-border rounded-2xl p-3 flex flex-col justify-center bg-brand-bg/20">
+                  <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Pick-up Date</span>
                   <div className="flex items-center gap-1.5 mt-1">
-                    <Calendar className="h-4 w-4 text-blue-600 shrink-0" />
+                    <Calendar className="h-4 w-4 text-brand-primary shrink-0" />
                     <input
                       type="text"
                       value={pickupDate}
                       onChange={(e) => setPickupDate(e.target.value)}
-                      className="bg-transparent border-none text-slate-800 font-semibold text-xs w-full focus:outline-none"
+                      className="bg-transparent border-none text-text-main font-semibold text-xs w-full focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between gap-3">
-                  <div className="border border-slate-100 rounded-2xl p-3 flex flex-col justify-center grow">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Return Date</span>
+                  <div className="border border-card-border rounded-2xl p-3 flex flex-col justify-center grow bg-brand-bg/20">
+                    <span className="text-[10px] font-bold text-text-muted uppercase tracking-wider block">Return Date</span>
                     <div className="flex items-center gap-1.5 mt-1">
-                      <Calendar className="h-4 w-4 text-blue-600 shrink-0" />
+                      <Calendar className="h-4 w-4 text-brand-primary shrink-0" />
                       <input
                         type="text"
                         value={returnDate}
                         onChange={(e) => setReturnDate(e.target.value)}
-                        className="bg-transparent border-none text-slate-800 font-semibold text-xs w-full focus:outline-none"
+                        className="bg-transparent border-none text-text-main font-semibold text-xs w-full focus:outline-none"
                       />
                     </div>
                   </div>
                   <Link 
                     href="/vehicles"
-                    className="h-12 w-12 bg-blue-600 hover:bg-blue-500 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-blue-500/25 transition-colors shrink-0"
+                    className="h-12 w-12 bg-brand-primary hover:bg-brand-primary/90 rounded-2xl flex items-center justify-center text-white shadow-xs transition-colors shrink-0"
                   >
                     <Search className="h-5 w-5" />
                   </Link>
@@ -266,7 +266,7 @@ export default function Home() {
               </div>
 
               {/* Guarantees bar */}
-              <div className="flex flex-wrap gap-4 mt-4 pt-3 border-t border-slate-50 text-[10px] sm:text-xs text-slate-500 font-medium">
+              <div className="flex flex-wrap gap-4 mt-4 pt-3 border-t border-card-border text-[10px] sm:text-xs text-text-muted font-semibold">
                 <span className="flex items-center gap-1"><Check className="h-3.5 w-3.5 text-emerald-500" /> Best Price Guarantee</span>
                 <span className="flex items-center gap-1"><Check className="h-3.5 w-3.5 text-emerald-500" /> 24/7 Customer Support</span>
                 <span className="flex items-center gap-1"><Check className="h-3.5 w-3.5 text-emerald-500" /> Free Cancellation</span>
@@ -281,10 +281,10 @@ export default function Home() {
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-8">
             <div>
-              <h2 className="font-display font-bold text-2xl text-slate-900">Explore by Category</h2>
-              <p className="text-xs text-slate-500 mt-1">Select from our wide range of premium vehicles and structured packages.</p>
+              <h2 className="font-display font-bold text-2xl text-text-main">Explore by Category</h2>
+              <p className="text-xs text-text-muted mt-1 font-semibold">Select from our wide range of premium vehicles and structured packages.</p>
             </div>
-            <Link href="/vehicles" className="text-blue-600 text-xs font-semibold hover:underline flex items-center gap-0.5">
+            <Link href="/vehicles" className="text-brand-primary text-xs font-bold hover:underline flex items-center gap-0.5">
               View all <ChevronRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -294,7 +294,7 @@ export default function Home() {
               <Link 
                 key={idx} 
                 href={cat.link}
-                className="bg-white/70 backdrop-blur-md border border-white/50 rounded-3xl overflow-hidden shrink-0 w-44 sm:w-48 h-64 shadow-md hover:shadow-xl hover:border-blue-500/30 transition-all duration-300 flex flex-col group relative"
+                className="bg-card-bg/75 backdrop-blur-md border border-card-border rounded-3xl overflow-hidden shrink-0 w-44 sm:w-48 h-64 shadow-xs hover:shadow-md hover:border-brand-primary/45 transition-all duration-300 flex flex-col group relative"
               >
                 {/* Image Container */}
                 <div className="w-full h-36 overflow-hidden relative">
@@ -302,20 +302,20 @@ export default function Home() {
                   <img 
                     src={cat.image} 
                     alt={cat.name} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                    className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" 
                   />
                 </div>
                 
                 {/* Content Container */}
                 <div className="p-4 flex flex-col justify-between grow z-20">
                   <div>
-                    <h3 className="font-display font-bold text-sm text-slate-900 group-hover:text-blue-600 transition-colors duration-300 line-clamp-1">
+                    <h3 className="font-display font-bold text-sm text-text-main group-hover:text-brand-primary transition-colors duration-300 line-clamp-1">
                       {cat.name}
                     </h3>
-                    <p className="text-[10px] text-slate-400 mt-1 font-medium">Explore premium fleet</p>
+                    <p className="text-[10px] text-text-muted mt-1 font-semibold">Explore premium fleet</p>
                   </div>
                   
-                  <span className="text-[10px] font-bold text-blue-600 flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
+                  <span className="text-[10px] font-bold text-brand-primary flex items-center gap-1 group-hover:gap-2 transition-all duration-300">
                     Explore <ArrowRight className="h-3.5 w-3.5" />
                   </span>
                 </div>
@@ -325,15 +325,15 @@ export default function Home() {
         </section>
 
         {/* Featured Vehicles Grid */}
-        <section className="py-16 bg-slate-50 border-y border-slate-100">
+        <section className="py-16 bg-brand-bg border-y border-card-border">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div className="flex justify-between items-end mb-10">
               <div>
-                <h2 className="font-display font-bold text-2xl text-slate-900">Featured Vehicles</h2>
-                <p className="text-xs text-slate-500 mt-1 font-medium">Verify premium specifications, inspect models, and book instantly.</p>
+                <h2 className="font-display font-bold text-2xl text-text-main">Featured Vehicles</h2>
+                <p className="text-xs text-text-muted mt-1 font-semibold">Verify premium specifications, inspect models, and book instantly.</p>
               </div>
-              <Link href="/vehicles" className="text-blue-600 text-xs font-semibold hover:underline flex items-center gap-0.5">
+              <Link href="/vehicles" className="text-brand-primary text-xs font-bold hover:underline flex items-center gap-0.5">
                 View all <ChevronRight className="h-3.5 w-3.5" />
               </Link>
             </div>
@@ -342,7 +342,7 @@ export default function Home() {
               {vehicles.map((v) => (
                 <div 
                   key={v.id} 
-                  className="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group"
+                  className="bg-card-bg border border-card-border rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col group"
                 >
                   <div className="h-48 overflow-hidden relative">
                     <img 
@@ -352,13 +352,13 @@ export default function Home() {
                     />
                     <button 
                       onClick={() => toggleFavorite(v.id)}
-                      className="absolute top-4 right-4 p-2 rounded-full bg-white/80 backdrop-blur-md text-slate-600 hover:text-rose-500 shadow-sm cursor-pointer transition-colors"
+                      className="absolute top-4 right-4 p-2 rounded-full bg-card-bg/85 backdrop-blur-md text-text-muted hover:text-rose-500 shadow-xs cursor-pointer transition-colors"
                     >
                       <Heart 
                         className={`h-4.5 w-4.5 ${favorites.includes(v.id) ? "fill-rose-500 text-rose-500" : ""}`} 
                       />
                     </button>
-                    <span className="absolute bottom-4 left-4 text-[10px] font-bold bg-blue-600 text-white px-2.5 py-1 rounded-lg uppercase tracking-wider">
+                    <span className="absolute bottom-4 left-4 text-[10px] font-bold bg-brand-primary text-white px-2.5 py-1 rounded-lg uppercase tracking-wider">
                       Featured
                     </span>
                   </div>
@@ -366,41 +366,41 @@ export default function Home() {
                   <div className="p-6 grow flex flex-col justify-between">
                     <div>
                       <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-display font-bold text-lg text-slate-900 group-hover:text-blue-600 transition-colors">
+                        <h3 className="font-display font-bold text-lg text-text-main group-hover:text-brand-primary transition-colors">
                           {v.make} {v.model}
                         </h3>
                         <div className="flex items-center gap-1 text-amber-500 text-xs font-bold">
                           <Star className="h-3.5 w-3.5 fill-amber-500" /> {v.rating?.toFixed(1)}
                         </div>
                       </div>
-                      <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-4">
+                      <p className="text-[10px] text-text-muted font-bold uppercase tracking-wider mb-4">
                         Owner: {v.owner} &bull; {v.location}
                       </p>
 
-                      <div className="grid grid-cols-3 gap-2 text-[11px] text-slate-500 border-t border-slate-50 pt-4 mb-4">
+                      <div className="grid grid-cols-3 gap-2 text-[11px] text-text-muted border-t border-card-border pt-4 mb-4">
                         <div>
-                          <span className="block text-[9px] font-bold text-slate-400 uppercase">Seats</span>
-                          <span className="font-semibold text-slate-800">{v.seats} Seats</span>
+                          <span className="block text-[9px] font-bold text-text-muted uppercase">Seats</span>
+                          <span className="font-semibold text-text-main">{v.seats} Seats</span>
                         </div>
                         <div>
-                          <span className="block text-[9px] font-bold text-slate-400 uppercase">Transmission</span>
-                          <span className="font-semibold text-slate-800 capitalize">{v.transmission}</span>
+                          <span className="block text-[9px] font-bold text-text-muted uppercase">Transmission</span>
+                          <span className="font-semibold text-text-main capitalize">{v.transmission}</span>
                         </div>
                         <div>
-                          <span className="block text-[9px] font-bold text-slate-400 uppercase">Fuel Type</span>
-                          <span className="font-semibold text-slate-800 capitalize">{v.fuel_type}</span>
+                          <span className="block text-[9px] font-bold text-text-muted uppercase">Fuel Type</span>
+                          <span className="font-semibold text-text-main capitalize">{v.fuel_type}</span>
                         </div>
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between pt-2">
                       <div>
-                        <span className="text-xl font-bold text-slate-900">${v.price_per_day}</span>
-                        <span className="text-xs text-slate-400">/day</span>
+                        <span className="text-xl font-bold text-text-main">${v.price_per_day}</span>
+                        <span className="text-xs text-text-muted">/day</span>
                       </div>
                       <Link 
                         href={`/vehicles/${v.id}`}
-                        className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold rounded-xl transition-colors"
+                        className="px-4 py-2 bg-brand-primary hover:bg-brand-primary/90 text-white text-xs font-semibold rounded-xl transition-colors"
                       >
                         Book Now
                       </Link>
@@ -417,10 +417,10 @@ export default function Home() {
         <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <h2 className="font-display font-bold text-2xl text-slate-900">Customized Tourism Packages</h2>
-              <p className="text-xs text-slate-500 mt-1">Curated road adventures, local guides, and comfortable bus transfers.</p>
+              <h2 className="font-display font-bold text-2xl text-text-main">Customized Tourism Packages</h2>
+              <p className="text-xs text-text-muted mt-1 font-semibold">Curated road adventures, local guides, and comfortable bus transfers.</p>
             </div>
-            <Link href="/tours" className="text-blue-600 text-xs font-semibold hover:underline flex items-center gap-0.5">
+            <Link href="/tours" className="text-brand-primary text-xs font-bold hover:underline flex items-center gap-0.5">
               Explore All <ChevronRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -429,11 +429,11 @@ export default function Home() {
             {tours.map((t, idx) => (
               <div 
                 key={idx} 
-                className="bg-white border border-slate-100 rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group"
+                className="bg-card-bg border border-card-border rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col group"
               >
                 <div className="h-56 overflow-hidden relative">
                   <img src={t.image} alt={t.title} className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500" />
-                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-xl text-xs font-bold text-slate-800 shadow-sm">
+                  <div className="absolute top-4 left-4 bg-card-bg/90 backdrop-blur-md px-3 py-1 rounded-xl text-xs font-bold text-text-main shadow-xs">
                     {t.duration}
                   </div>
                 </div>
@@ -441,12 +441,12 @@ export default function Home() {
                 <div className="p-6 grow flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-start mb-2">
-                      <h3 className="font-display font-bold text-lg text-slate-900 group-hover:text-blue-600 transition-colors leading-tight">
+                      <h3 className="font-display font-bold text-lg text-text-main group-hover:text-brand-primary transition-colors leading-tight">
                         {t.title}
                       </h3>
                     </div>
-                    <p className="text-xs text-slate-500 mb-3">{t.itinerary}</p>
-                    <div className="flex items-center gap-1 mb-4 text-xs font-medium text-slate-400">
+                    <p className="text-xs text-text-muted mb-3 font-semibold">{t.itinerary}</p>
+                    <div className="flex items-center gap-1 mb-4 text-xs font-medium text-text-muted">
                       <Star className="h-3.5 w-3.5 text-amber-500 fill-amber-500" />
                       <span className="font-bold text-slate-800">{t.rating}</span> ({t.reviews} reviews)
                     </div>
